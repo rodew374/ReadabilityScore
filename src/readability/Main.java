@@ -4,14 +4,20 @@ import java.util.Scanner;
 
 /**
  * This program will scan text and output a readability score.
- * @version 1.0 Simplest Estimation. Reads a single line of text and outputs either
- * "HARD", if more than 100 symbols, or "EASY", if 100 or less.
+ * @version 2.0 Words and Sentences. Reads a single line of text and outputs either
+ * "HARD", if sentences contain more than 10 words on average, or "EASY", if less.
  */
 public class Main {
     public static void main(String[] arg) {
         Scanner scanner = new Scanner(System.in);
-        char[] text = scanner.nextLine().toCharArray();
+        String[] text = scanner.nextLine().split("[.!?]");
+        double totalWordCount = 0;
+        double sentenceCount = text.length;
 
-        System.out.println(text.length > 100 ? "HARD" : "EASY");
+        for (String sentence : text) {
+            totalWordCount += sentence.trim().split("\\s").length;
+        }
+
+        System.out.println(totalWordCount / sentenceCount > 10 ? "HARD" : "EASY");
     }
 }
