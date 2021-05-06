@@ -1,91 +1,82 @@
 package readability;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * This program will scan text and output a readability score.
- * @version 3.0 Automated Readability Index. Reads a text file and calculates the ARI score.
+ * @version 3.10 Apr 05 2021 Automated Readability Index. Reads a text file and calculates the ARI score.
  * score = 4.71 * characters/words + 0.5 * words/sentences - 21.43
  */
 public class Main {
-    public static void main(String[] arg) throws FileNotFoundException {
-        File file = new File(arg[0]);
-        Scanner scanner = new Scanner(file);
-        StringBuilder sb = new StringBuilder();
+    public static void main(String[] arg) throws IOException {
+        String text = readFileAsString(arg[0]);
         double score;
-        int countW = 0;
-        int countS = 0;
-        int countC = 0;
-        String ageRange = "";
+        int words;
+        int sentences;
+        int characters;
+        String ageRange;
 
-        while (scanner.hasNext()) {
-            String[] line = scanner.nextLine().split("[.!?]+\\s*");
-            countS += line.length;
+        characters = text.replaceAll("\\s", "").split("").length;
+        words = text.split("\\s").length;
+        sentences = text.split("[.?!]").length;
 
-            for (String sentence : line) {
-                String[] words = sentence.split("\\s");
-                countW += words.length;
+        score = 4.71 * characters/words + 0.5 * words/sentences - 21.43;
 
-                for (String word : words) {
-                    countC += word.toCharArray().length;
-                    sb.append(word).append(" ");
-                }
-            }
-        }
+        ageRange = getAgeRange(score);
 
-        score = 4.71 * countC/countW + 0.5 * countW/countS - 21.43;
+        System.out.printf("The text is:\n%s\nWords: %d\nSentences: %d\nCharacters: %d\nThe score is: %,.2f\nThis text should be " +
+                "understood" +
+                " by %s-year-olds.", text, words, sentences, characters, score, ageRange);
+    }
 
+    /**
+     * Reads a file and returns the data as a single String
+     * @param fileName the path to the file
+     * @return a string containing the data from the file
+     */
+    public static String readFileAsString(String fileName) throws IOException {
+        return new String(Files.readAllBytes(Paths.get(fileName)));
+    }
+
+    /**
+     * Returns a String containing the appropriate Age Range for the Automated Readability Index score.
+      * @param score the ARI
+     * @return String Age Range
+     */
+    public static String getAgeRange(double score) {
         switch ((int) Math.ceil(score)) {
             case 1:
-                ageRange = "5-6";
-                break;
+                return "5-6";
             case 2:
-                ageRange = "6-7";
-                break;
+                return "6-7";
             case 3:
-                ageRange = "7-9";
-                break;
+                return "7-9";
             case 4:
-                ageRange = "9-10";
-                break;
+                return "9-10";
             case 5:
-                ageRange = "10-11";
-                break;
+                return "10-11";
             case 6:
-                ageRange = "11-12";
-                break;
+                return "11-12";
             case 7:
-                ageRange = "12-13";
-                break;
+                return "12-13";
             case 8:
-                ageRange = "13-14";
-                break;
+                return "13-14";
             case 9:
-                ageRange = "14-15";
-                break;
+                return "14-15";
             case 10:
-                ageRange = "15-16";
-                break;
+                return "15-16";
             case 11:
-                ageRange = "16-17";
-                break;
+                return "16-17";
             case 12:
-                ageRange = "17-18";
-                break;
+                return "17-18";
             case 13:
-                ageRange = "18-24";
-                break;
+                return "18-24";
             case 14:
-                ageRange = "24+";
-                break;
+                return "24+";
             default:
-                break;
+                return "";
         }
-
-        System.out.printf("The text is:\n%s\n\nWords: %d\nSentences: %d\nCharacters: %d\nThe score is: %,.2f\nThis text should be " +
-                "understood" +
-                " by %s-year-olds.", sb, countW, countS, countC, score, ageRange);
     }
 }
