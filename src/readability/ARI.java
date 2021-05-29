@@ -2,6 +2,7 @@ package readability;
 
 public class ARI extends Score {
     ARI(Text text) {
+        name = "Automated Readability Index";
         score = 4.71 * text.characters / text.words + 0.5 * text.words / text.sentences - 21.43;
     }
 }
