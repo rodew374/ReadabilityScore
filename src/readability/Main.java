@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 /**
  * This program will scan text and output a readability score.
- * @version 4.0 May 26 2021 Readability Indices. Reads a text file and calculates the Automated Readability Index (ARI), the Flesch-Kincaid
+ * @version 4.01 May 26 2021 Readability Indices. Reads a text file and calculates the Automated Readability Index (ARI), the Flesch-Kincaid
  * Index (FKI), the Simple Measure of Gobbledygook (SMOG), and the Coleman-Liau Index (CLI).
  */
 public class Main {
