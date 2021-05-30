@@ -1,65 +1,41 @@
 package readability;
 
-import org.jetbrains.annotations.NotNull;
-
+/**
+ * This class represents the Coleman-Liau index. It stores the name of the score and calculates the score for the passed Text
+ * object.
+ */
 public class CL extends Score {
-    private int L;
-    private int S;
 
+    /**
+     * The average number of characters per 100 words.
+     */
+    private double L;
+
+    /**
+     * The average number of sentences per 100 words
+     */
+    private double S;
+
+    /**
+     * Constructor for Score CL.
+     * @param text A Text object.
+     */
     CL(Text text) {
         name = "Coleman-Liau index";
-        setL(text);
-        setS(text);
+        calcVar(text);
         score = 0.0588 * L - 0.296 * S - 15.8;
     }
 
-    private void setL(Text text) {
-        String[] words = text.text.split("\\s");
-        int[] count = new int[text.words / 100];
-        int index = 0;
-        int total = 0;
+    /**
+     * Calculates the average number of characters and sentences per 100 words.
+     * @param text A Text object
+     */
+    private void calcVar(Text text) {
+        double characters = text.characters;
+        double words = text.words;
+        double sentences = text.sentences;
 
-        for (int i = 0; i < count.length; i++) {
-            for (int j = 0; j < 100; j++) {
-                count[i] += words[index++].toCharArray().length;
-            }
-        }
-
-        for (int n : count) {
-            total += n;
-        }
-
-        L = total / count.length;
-
-    }
-
-    private void setS(@NotNull Text text) {
-        String[] sentences = text.text.split("[.?!]");
-        int[] counter = new int[text.words / 100];
-        int index = 0;
-        int total = 0;
-        int divisor = counter.length;
-
-        for (int i = 0; i < counter.length; i++) {
-            int wordCount = 0;
-            while (wordCount < 100 && index < sentences.length) {
-                wordCount += sentences[index++].trim().split(" ").length;
-                counter[i]++;
-            }
-
-            if (wordCount < 100) {
-                counter[i] = 0;
-            }
-        }
-
-        for (int n : counter) {
-            if (n == 0) {
-                divisor--;
-            }
-
-            total += n;
-        }
-
-        S = total / divisor;
+        L = characters / words * 100.0;
+        S = sentences / words * 100.0;
     }
 }

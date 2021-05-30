@@ -1,15 +1,31 @@
 package readability;
 
+/**
+ * This is the parent class to all readability scores (ARI, FK, SMOG, CL).
+ */
 public abstract class Score {
+    /**
+     * The index's readability score. Each score's constructor calculates it differently.
+     */
     protected double score;
+    /**
+     * The name of the score.
+     */
     protected String name;
 
+    /**
+     * Calls the getAgeRange() and displays the Score's data to the user.
+     */
     protected void display() {
-        System.out.printf("\n%s: %.2f (about %d-year-olds).", name, score, getAgeRange());
+        System.out.printf("\n%s: %.2f (about %d-year-olds).", name, score, getAge());
     }
 
-    protected int getAgeRange() {
-        switch ((int) Math.ceil(score)) {
+    /**
+     * Provides the appropriate Age for the calculated score.
+     * @return int Age
+     */
+    protected int getAge() {
+        switch ((int) Math.round(score)) {
             case 1:
                 return 6;
             case 2:
